@@ -48,9 +48,8 @@ public class EntryController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Updates an entry", description = "The updated entry is returned")
-    @Path("/{id}")
-    public Entry update(@PathParam("id") long id, @Valid Entry entry) {
-        return entryService.updateEntry(entry, id);
+    public Entry update(@Valid Entry entry) {
+        return entryService.updateEntry(entry);
     }
 
     @DELETE

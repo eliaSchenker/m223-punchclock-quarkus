@@ -30,11 +30,8 @@ public class EntryService {
     }
 
     @Transactional
-    public Entry updateEntry(Entry updatedEntry, long id) {
-        Entry entry = entityManager.find(Entry.class, id);
-        entry.setCheckIn(updatedEntry.getCheckIn());
-        entry.setCheckOut(updatedEntry.getCheckOut());
-        entityManager.persist(entry);
+    public Entry updateEntry(Entry entry) {
+        entityManager.merge(entry);
         return entry;
     }
 
