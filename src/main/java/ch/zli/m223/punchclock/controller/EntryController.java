@@ -27,7 +27,6 @@ public class EntryController {
 
     @Inject
     EntryService entryService;
-    Validator validator;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,7 +54,7 @@ public class EntryController {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Deletes an entry", description = "The deleted entry is not returned")
+    @Operation(summary = "Deletes an entry", description = "The deleted entry is returned")
     @Path("/{id}")
     public Entry delete(@PathParam("id") long id) {
         return entryService.deleteEntry(id);

@@ -2,17 +2,19 @@ const URL = 'http://localhost:8080';
 let entries = [];
 
 function openUpdateEntryForm() {
-    document.getElementById("updateEntryForm").style.display = "block";
-    document.getElementById("createEntryForm").style.display = "none";
     document.getElementById("error").innerText = "";
-    document.getElementById("errorUpdate").innerText = "";
+    document.getElementById("createEntryForm").removeEventListener("submit", createEntry);
+    document.getElementById("createEntryForm").addEventListener("submit", updateEntry);
+    document.getElementById("formTitle").innerText = "Update entry";
+    document.getElementById("updateBack").style.display = "block";
 }
 
 function closeUpdateEntryForm() {
-    document.getElementById("updateEntryForm").style.display = "none";
-    document.getElementById("createEntryForm").style.display = "block";
     document.getElementById("error").innerText = "";
-    document.getElementById("errorUpdate").innerText = "";
+    document.getElementById("createEntryForm").removeEventListener("submit", updateEntry);
+    document.getElementById("createEntryForm").addEventListener("submit", createEntry);
+    document.getElementById("formTitle").innerText = "Add entry";
+    document.getElementById("updateBack").style.display = "none";
 }
 
 const createEntry = (e) => {
@@ -21,6 +23,7 @@ const createEntry = (e) => {
     let data = {};
     data["checkIn"] = formData.get("checkIn");
     data["checkOut"] = formData.get("checkOut");
+    data["category"] = categories[formData.get("category")];
 
     fetch(`${URL}/entries`, {
         method: 'POST',
@@ -50,6 +53,7 @@ const updateEntry = (e) => {
     data["id"] = formData.get("id");
     data["checkIn"] = formData.get("checkIn");
     data["checkOut"] = formData.get("checkOut");
+    data["category"] = categories[formData.get("category")];
 
     fetch(`${URL}/entries`, {
         method: 'PUT',
@@ -101,6 +105,30 @@ const createCell = (text) => {
     return cell;
 };
 
+let categories = [];
+
+function renderCategoryDropdown() {
+    let dropdown = document.getElementById("categoriesDropdown");
+    for(let i = 0;i<categories.length;i++) {
+        const categoryIndex = i;
+        let option = document.createElement("option");
+        option.innerText = categories[categoryIndex].name;
+        option.value = categoryIndex;
+        dropdown.appendChild(option);
+    }
+}
+
+const loadCategories = () => {
+    fetch(`${URL}/categories`, {
+        method: 'GET'
+    }).then((result) => {
+        result.json().then((result) => {
+            categories = result;
+            renderCategoryDropdown();
+        });
+    });
+}
+
 const renderEntries = () => {
     const display = document.querySelector('#entryDisplay');
     display.innerHTML = '';
@@ -109,6 +137,7 @@ const renderEntries = () => {
         row.appendChild(createCell(entry.id));
         row.appendChild(createCell(new Date(entry.checkIn).toLocaleString()));
         row.appendChild(createCell(new Date(entry.checkOut).toLocaleString()));
+        row.appendChild(createCell(entry.category.name));
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = "Delete";
@@ -125,9 +154,10 @@ const renderEntries = () => {
             checkInDate.setMinutes(checkInDate.getMinutes() - checkInDate.getTimezoneOffset());
             let checkOutDate = new Date(entry.checkOut);
             checkOutDate.setMinutes(checkOutDate.getMinutes() - checkOutDate.getTimezoneOffset());
-            document.getElementById("idUpdate").value = entry.id;
-            document.getElementById("checkInUpdate").value = checkInDate.toISOString().slice(0, 16);
-            document.getElementById("checkOutUpdate").value = checkOutDate.toISOString().slice(0, 16);
+            document.getElementById("id").value = entry.id;
+            document.getElementById("checkIn").value = checkInDate.toISOString().slice(0, 16);
+            document.getElementById("checkOut").value = checkOutDate.toISOString().slice(0, 16);
+            document.getElementById("categoriesDropdown").selectedIndex = categories.map(function(e) { return e.id; }).indexOf(entry.category.id);
             openUpdateEntryForm();
         }
         row.appendChild(updateButton);
@@ -137,9 +167,7 @@ const renderEntries = () => {
 };
 
 document.addEventListener('DOMContentLoaded', function(){
-    const createEntryForm = document.querySelector('#createEntryForm');
-    createEntryForm.addEventListener('submit', createEntry);
-    const updateEntryForm = document.querySelector('#updateEntryForm');
-    updateEntryForm.addEventListener('submit', updateEntry);
+    closeUpdateEntryForm();
     indexEntries();
+    loadCategories();
 });

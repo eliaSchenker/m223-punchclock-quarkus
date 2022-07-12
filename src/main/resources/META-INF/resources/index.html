@@ -10,24 +10,20 @@
         <script src="script.js" type="application/javascript"></script>
     </head>
     <body>
+        <button onclick="location.href = 'editcategory.html'">Manage categories</button>
         <form id="createEntryForm">
+            <button id="updateBack" onclick="openUpdateEntryForm(); ">Back</button>
+            <p id="formTitle"></p>
+            <input type="hidden" id="id" name="id">
             <label for="checkIn">Check in</label>
             <input type="datetime-local" name="checkIn" id="checkIn" required>
             <label for="checkOut">Check out</label>
             <input type="datetime-local" name="checkOut" id="checkOut" required>
+            <select id="categoriesDropdown" name="category">
+
+            </select>
             <p id="error" style="color:red;"></p>
             <input type="submit" value="Save" />
-        </form>
-        <form id="updateEntryForm" style="display:none">
-            <button onclick="closeUpdateEntryForm()">Close</button>
-            <p>Edit entry:</p>
-            <input type="hidden" id="idUpdate" name="id">
-            <label for="checkIn">Check in</label>
-            <input type="datetime-local" name="checkIn" id="checkInUpdate" required>
-            <label for="checkOut">Check out</label>
-            <input type="datetime-local" name="checkOut" id="checkOutUpdate" required>
-            <p id="errorUpdate" style="color:red;"></p>
-            <input type="submit" value="Update" />
         </form>
         <table>
             <thead>
@@ -35,6 +31,8 @@
                     <th>ID</th>
                     <th>Check in</th>
                     <th>Check out</th>
+                    <th>Category</th>
+
                 </tr>
             </thead>
             <tbody id="entryDisplay">
