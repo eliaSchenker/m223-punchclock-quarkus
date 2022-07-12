@@ -51,7 +51,7 @@ const updateEntry = (e) => {
     data["checkIn"] = formData.get("checkIn");
     data["checkOut"] = formData.get("checkOut");
 
-    fetch(`${URL}/entries/` + data["id"], {
+    fetch(`${URL}/entries`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
