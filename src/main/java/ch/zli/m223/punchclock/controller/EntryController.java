@@ -3,6 +3,8 @@ package ch.zli.m223.punchclock.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,6 +27,7 @@ public class EntryController {
 
     @Inject
     EntryService entryService;
+    Validator validator;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,8 +40,8 @@ public class EntryController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Add a new Entry", description = "The newly created entry is returned. The id may not be passed.")
-    public Entry add(Entry entry) {
-       return entryService.createEntry(entry);
+    public Entry add(@Valid Entry entry) throws Exception {
+        return entryService.createEntry(entry);
     }
 
     @PUT
@@ -46,7 +49,7 @@ public class EntryController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Updates an entry", description = "The updated entry is returned")
     @Path("/{id}")
-    public Entry update(@PathParam("id") long id, Entry entry) {
+    public Entry update(@PathParam("id") long id, @Valid Entry entry) {
         return entryService.updateEntry(entry, id);
     }
 

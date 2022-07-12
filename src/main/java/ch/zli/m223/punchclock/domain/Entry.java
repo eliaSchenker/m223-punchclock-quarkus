@@ -1,6 +1,8 @@
 package ch.zli.m223.punchclock.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -38,5 +40,10 @@ public class Entry {
 
     public void setCheckOut(LocalDateTime checkOut) {
         this.checkOut = checkOut;
+    }
+
+    @AssertTrue(message="The Check In Date & Time should be before the Check Out Date & Time!")
+    private boolean isCheckOutAfterCheckIn() {
+        return checkOut.isAfter(checkIn);
     }
 }

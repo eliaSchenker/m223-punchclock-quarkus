@@ -4,11 +4,15 @@ let entries = [];
 function openUpdateEntryForm() {
     document.getElementById("updateEntryForm").style.display = "block";
     document.getElementById("createEntryForm").style.display = "none";
+    document.getElementById("error").innerText = "";
+    document.getElementById("errorUpdate").innerText = "";
 }
 
 function closeUpdateEntryForm() {
     document.getElementById("updateEntryForm").style.display = "none";
     document.getElementById("createEntryForm").style.display = "block";
+    document.getElementById("error").innerText = "";
+    document.getElementById("errorUpdate").innerText = "";
 }
 
 const createEntry = (e) => {
@@ -26,8 +30,15 @@ const createEntry = (e) => {
         body: JSON.stringify(data)
     }).then((result) => {
         result.json().then((entry) => {
-            entries.push(entry);
-            renderEntries();
+            if(entry.id == undefined) {
+                document.getElementById("error").innerText = entry.parameterViolations[0].message;
+            }else {
+                indexEntries();
+            }
+        });
+    }).catch((result) => {
+        result.json().then((response) => {
+            document.getElementById("error").innerText = response.parameterViolations[0].message;
         });
     });
 };
@@ -48,8 +59,16 @@ const updateEntry = (e) => {
         body: JSON.stringify(data)
     }).then((result) => {
         result.json().then((entry) => {
-            closeUpdateEntryForm();
-            indexEntries();
+            if(entry.checkIn == undefined) {
+                document.getElementById("errorUpdate").innerText = entry.parameterViolations[0].message;
+            }else {
+                closeUpdateEntryForm();
+                indexEntries();
+            }
+        });
+    }).catch((result) => {
+        result.json().then((response) => {
+            document.getElementById("errorUpdate").innerText = response.parameterViolations[0].message;
         });
     });
 };
@@ -107,8 +126,8 @@ const renderEntries = () => {
             let checkOutDate = new Date(entry.checkOut);
             checkOutDate.setMinutes(checkOutDate.getMinutes() - checkOutDate.getTimezoneOffset());
             document.getElementById("idUpdate").value = entry.id;
-            document.getElementById("checkInUpdate").value = checkInDate.toISOString().slice(0, 16);;
-            document.getElementById("checkOutUpdate").value = checkOutDate.toISOString().slice(0, 16);;
+            document.getElementById("checkInUpdate").value = checkInDate.toISOString().slice(0, 16);
+            document.getElementById("checkOutUpdate").value = checkOutDate.toISOString().slice(0, 16);
             openUpdateEntryForm();
         }
         row.appendChild(updateButton);
