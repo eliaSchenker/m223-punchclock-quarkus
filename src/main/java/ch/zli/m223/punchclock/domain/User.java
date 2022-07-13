@@ -37,6 +37,10 @@ public class User {
     @JsonIgnore
     private List<Entry> entries;
 
+    @ManyToOne
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private Location location;
+
     public long getId() {
         return this.id;
     }
@@ -61,7 +65,6 @@ public class User {
         this.password = password;
     }
 
-
     public String getRole() {
         return this.role;
     }
@@ -78,4 +81,11 @@ public class User {
         this.entries = entries;
     }
 
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }
