@@ -1,5 +1,6 @@
 package ch.zli.m223.punchclock.domain;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -13,7 +14,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy="category")
-    private ArrayList<Entry> entries;
+    private List<Entry> entries;
 
     public Long getId() {
         return id;
@@ -31,7 +32,7 @@ public class Category {
         this.name = name;
     }
 
-    public ArrayList<Entry> getEntries() {
+    public List<Entry> getEntries() {
         return this.entries;
     }
 

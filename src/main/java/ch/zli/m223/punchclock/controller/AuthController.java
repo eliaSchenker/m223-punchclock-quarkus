@@ -13,8 +13,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import ch.zli.m223.punchclock.domain.User;
 import ch.zli.m223.punchclock.service.AuthenticationService;
 
-@Tag(name = "Authorization", description = "This endpoint can be used for authorization as a user")
 @Path("/auth")
+@Tag(name = "Authorization", description = "Handles the User authorization")
 public class AuthController {
     @Inject
     AuthenticationService authenticationService; 
@@ -23,7 +23,6 @@ public class AuthController {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public String login(User user){
-
         if(authenticationService.checkIfUserExists(user)){
             return authenticationService.GenerateValidJwtToken(user.getUsername());
         }
