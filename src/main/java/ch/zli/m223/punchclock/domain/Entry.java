@@ -21,6 +21,10 @@ public class Entry {
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
     
     public Long getId() {
         return id;
@@ -52,6 +56,14 @@ public class Entry {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @AssertTrue(message="The Check In Date & Time should be before the Check Out Date & Time!")
