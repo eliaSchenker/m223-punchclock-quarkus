@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Category {
     @Id
@@ -13,7 +15,8 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy="category")
+    @OneToMany(mappedBy="category", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Entry> entries;
 
     public Long getId() {

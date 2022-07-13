@@ -2,6 +2,7 @@ package ch.zli.m223.punchclock.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -28,6 +29,7 @@ public class CategoryController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"User", "Admin"})
     @Operation(summary = "List all categories", description = "")
     public List<Category> list() {
         return categoryService.findAll();
@@ -36,6 +38,7 @@ public class CategoryController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
     @Operation(summary = "Add a new Category", description = "The newly created category is returned. The id may not be passed.")
     public Category add(@Valid Category category) {
         return categoryService.createCategory(category);
@@ -44,6 +47,7 @@ public class CategoryController {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
     @Operation(summary = "Updates a category", description = "The updated category is returned")
     public Category update(@Valid Category category) {
         return categoryService.updateCategory(category);
@@ -52,6 +56,7 @@ public class CategoryController {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
     @Operation(summary = "Deletes a category", description = "The deleted category is returned")
     @Path("/{id}")
     public Category delete(@PathParam("id") long id) {

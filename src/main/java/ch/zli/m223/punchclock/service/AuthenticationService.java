@@ -8,11 +8,11 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.jwt.build.Jwt;
 import org.eclipse.microprofile.jwt.Claims;
 
 import ch.zli.m223.punchclock.domain.User;
+import ch.zli.m223.punchclock.util.SecurityUtil;
 
 @RequestScoped
 public class AuthenticationService {
@@ -20,19 +20,25 @@ public class AuthenticationService {
     @Inject
     private EntityManager entityManager;
 
-    public boolean checkIfUserExists(User user){        
-        var query = entityManager.createQuery("SELECT COUNT(*) FROM User WHERE username = :name AND password = :password");        
-        query.setParameter("name", user.getUsername());
-        query.setParameter("password", BcryptUtil.bcryptHash(user.getPassword()));
-        var result = query.getSingleResult();
-
-        return (long)result == 1;
+    /**
+     * Checks if the credentials of a given user are valid
+     * Source: Moodle Block 4 Autorisierung und Authentifizerung, Lösungsideen: Auth & Category
+     * @param user The User Object
+     * @return Are the credentials valid
+     */
+    public boolean checkUserCredentials(User user){
+        try {
+            var query = entityManager.createQuery("FROM User WHERE username = :name", User.class);        
+            query.setParameter("name", user.getUsername());
+            User result = query.getSingleResult();
+              //Check if the user with that username exists and if the password is correct
+              return result != null && SecurityUtil.verifyPassword(user.getPassword(), result.getPassword());
+        }catch(Exception e) {
+            return false; //If there is any exception either with the verifying of the password or the query return unauthorized
+        }
     }
 
-    public void createNewUser(User user) {
-        user.setPassword(BcryptUtil.bcryptHash(user.getPassword()));
-        entityManager.persist(user);
-    }
+
 
     public String GenerateValidJwtToken(String username){
         String token =

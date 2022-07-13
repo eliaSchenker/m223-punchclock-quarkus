@@ -1,5 +1,6 @@
 # M223 Punchclock
 
+
 Folgende Schritte sind notwendig um die Applikation zu erstellen und zu starten: 
 1. Stellen Sie sicher, dass OpenJDK 11 oder höher installiert und JAVA_HOME korrekt gesetzt ist.  
 2. Installieren Sie (falls noch nicht vorhanden) Apache Maven 3.8.1 oder höher

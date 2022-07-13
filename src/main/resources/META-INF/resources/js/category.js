@@ -1,6 +1,7 @@
 const URL = 'http://localhost:8080';
 let categories = [];
 $(document).ready(function() {
+    document.getElementById("addCategoryForm").addEventListener("submit", addCategory);
     fetchCategories();
 });
 
@@ -16,12 +17,14 @@ function fetchCategories() {
     loadCategories();
 }
 
-document.getElementById("addCategoryForm").addEventListener("submit", addCategory);
+
 function addCategory(e){
+    e.preventDefault();
+
     const data = {};
     const formData = new FormData(e.target);
     data["name"] = formData.get("name");
-    e.preventDefault();
+
     fetch(`${URL}/categories`, {
         method: 'POST',
         headers: {

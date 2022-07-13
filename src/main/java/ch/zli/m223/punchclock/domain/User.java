@@ -1,9 +1,12 @@
 package ch.zli.m223.punchclock.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
@@ -11,7 +14,6 @@ import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
 
 @Entity
-@Table(name = "user")
 @UserDefinition 
 public class User {
     @Id
@@ -24,13 +26,15 @@ public class User {
     
     @Password
     @Column(nullable = false)
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     @Roles
     @Column(nullable = false)
     private String role;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Entry> entries;
 
     public long getId() {

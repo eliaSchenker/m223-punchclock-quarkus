@@ -14,9 +14,6 @@ public class EntryService {
     @Inject
     private EntityManager entityManager;
 
-    public EntryService() {
-    }
-
     @Transactional 
     public Entry createEntry(Entry entry) {
         entityManager.persist(entry);
@@ -27,6 +24,12 @@ public class EntryService {
     public List<Entry> findAll() {
         var query = entityManager.createQuery("FROM Entry");
         return query.getResultList();
+    }
+
+    public Entry findById(long id) {
+        var query = entityManager.createQuery("FROM Entry WHERE id = :id", Entry.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
     }
 
     @Transactional

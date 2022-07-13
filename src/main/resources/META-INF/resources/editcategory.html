@@ -5,20 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/RequestUtil.js"></script>
+    <script src="js/category.js"></script>
     <title>Edit Category</title>
 </head>
 <body>
     <button onclick="location.href = 'index.html'">Back</button>
     <form id="addCategoryForm">
         <label for="categoryName"></label>
-        <input type="text" name="name" id="categoryName">
+        <input type="text" name="name" id="categoryName" autocomplete="off">
         <input type="submit" value="Add">
     </form>
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>String</th>
+                <th>Name</th>
                 <th>Delete</th>
             </tr>
         </thead>
@@ -28,6 +30,5 @@
             </tr>
         </tbody>
     </table>
-    <script src="category.js"></script>
 </body>
 </html>
