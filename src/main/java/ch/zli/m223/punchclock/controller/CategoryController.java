@@ -27,6 +27,11 @@ public class CategoryController {
     @Inject
     CategoryService categoryService;
 
+    /**
+     * Returns a list of all categories
+     * Only available to logged in users
+     * @return list of categories
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"User", "Admin"})
@@ -35,6 +40,12 @@ public class CategoryController {
         return categoryService.findAll();
     }
 
+    /**
+     * Adds a category
+     * Only available to administrators
+     * @param category The to be added category
+     * @return Returns the new category
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -44,6 +55,12 @@ public class CategoryController {
         return categoryService.createCategory(category);
     }
 
+    /**
+     * Updates a category
+     * Only available to administrators
+     * @param category The category containing new information 
+     * @return The deleted category
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -53,6 +70,12 @@ public class CategoryController {
         return categoryService.updateCategory(category);
     }
 
+    /**
+     * Deletes a category
+     * Only available to administrators
+     * @param id The id of the category
+     * @return The deleted category
+     */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

@@ -13,6 +13,16 @@ import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
 
+/**
+ * User model class
+ * Represents a user, who can log into the application.
+ * The application differentias between two type of users, the regular users
+ * and the administrators. The administrators gain the ability to interact which certain model
+ * classes which the regular users can't control (e.g. editing a category)
+ * 
+ * Author: Elia Schenker
+ * Last change: 15.07.2022
+ */
 @Entity
 @UserDefinition 
 public class User {

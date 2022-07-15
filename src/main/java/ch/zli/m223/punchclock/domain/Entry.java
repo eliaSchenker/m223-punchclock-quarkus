@@ -5,6 +5,13 @@ import javax.validation.constraints.AssertTrue;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entry model class
+ * Represents an entry which contains a checkOut and a checkIn
+ * 
+ * Author: Elia Schenker
+ * Last change: 15.07.2022
+ */
 @Entity
 public class Entry {
 

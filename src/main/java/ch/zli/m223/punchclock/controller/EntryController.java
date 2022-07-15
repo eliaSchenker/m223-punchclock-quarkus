@@ -38,6 +38,11 @@ public class EntryController {
     @Inject
     SecurityIdentityAssociation identity;
 
+    /**
+     * Returns a list of the users entries
+     * Only available to logged in users
+     * @return List of entries
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"User", "Admin"})
@@ -47,17 +52,29 @@ public class EntryController {
         return loggedInUser.getEntries();
     }
 
+    /**
+     * Creates a new entry, the owner (user) is automatically assigned using the logged in user
+     * Only available to logged in users
+     * @param entry The entry which should be added
+     * @return The new entry
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"User", "Admin"})
     @Operation(summary = "Add a new Entry", description = "The newly created entry is returned. The id may not be passed.")
-    public Entry add(@Valid Entry entry) throws Exception {
+    public Entry add(@Valid Entry entry) {
         User loggedInUser = userService.getUserByUsername(identity.getIdentity().getPrincipal().getName());
         entry.setUser(loggedInUser);
         return entryService.createEntry(entry);
     }
 
+    /**
+     * Updates an entry
+     * Only available to the owner of the entry
+     * @param entry The entry containing new information
+     * @return The edited entry
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -75,6 +92,12 @@ public class EntryController {
       
     }
 
+    /**
+     * Deletes an existing entry
+     * Only available to the owner of the entry
+     * @param id The id of the entry 
+     * @return The deleted entry
+     */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

@@ -20,13 +20,29 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import ch.zli.m223.punchclock.domain.Location;
 import ch.zli.m223.punchclock.service.LocationService;
+import ch.zli.m223.punchclock.service.UserService;
 
+/**
+ * UserController
+ * The UserController contains various methods which provide a way to manage and view locations
+ * 
+ * Author: Elia Schenker
+ * Last change: 15.07.2022
+ */
 @Path("/locations")
 @Tag(name = "Locations", description = "Handling of a users location")
 public class LocationController {
     @Inject
     LocationService locationService;
 
+    @Inject
+    UserService userService;
+    
+    /**
+     * Returns a list of all locations
+     * Only available to administrators
+     * @return list of locations
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
@@ -35,6 +51,12 @@ public class LocationController {
         return locationService.findAll();
     }
 
+    /**
+     * Adds a location
+     * Only available to administrators
+     * @param location The to be added location
+     * @return Returns the new location
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -44,6 +66,12 @@ public class LocationController {
         return locationService.createLocation(location);
     }
 
+    /**
+     * Updates a location
+     * Only available to administrators
+     * @param location The location containing new information 
+     * @return The deleted location
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -53,6 +81,12 @@ public class LocationController {
         return locationService.updateLocation(location);
     }
 
+    /**
+     * Deletes a location
+     * Only available to administrators
+     * @param id The id of the location
+     * @return The deleted location
+     */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

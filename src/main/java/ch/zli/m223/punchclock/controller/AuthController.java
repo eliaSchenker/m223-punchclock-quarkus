@@ -1,7 +1,6 @@
 package ch.zli.m223.punchclock.controller;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
@@ -23,22 +22,22 @@ public class AuthController {
     @Inject
     UserService userService;
 
+    /**
+     * Logs in a user using a username and a password
+     * Available to everyone
+     * @return If the Authentication is successfull, a JWA token is returned
+     */
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public String login(User user){
         if(authenticationService.checkUserCredentials(user)){
-            return authenticationService.GenerateValidJwtToken(user.getUsername());
+            //Get the user from the database (with correct roles)
+            User databaseUser = userService.getUserByUsername(user.getUsername());
+            return authenticationService.GenerateValidJwtToken(databaseUser);
         }
         else{
             throw new NotAuthorizedException("Credentials for the user " + user.getUsername() + " invalid ");
         } 
-    }
-
-    @POST
-    @Path("/register")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void register(@Valid User user) {
-        userService.createNewUser(user);
     }
 }

@@ -5,6 +5,13 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Location model class
+ * Represents a location of a user (e.g. a store at which a user works)
+ * 
+ * Author: Elia Schenker
+ * Last change: 15.07.2022
+ */
 @Entity
 public class Location {
     @Id
@@ -14,7 +21,7 @@ public class Location {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy="location", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="location", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<User> users;
 

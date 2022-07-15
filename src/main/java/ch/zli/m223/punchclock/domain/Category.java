@@ -6,6 +6,13 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Category Model class
+ * Represents a category of an entry
+ * 
+ * Author: Elia Schenker
+ * Last change: 15.07.2022
+ */
 @Entity
 public class Category {
     @Id
@@ -15,7 +22,7 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy="category", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Entry> entries;
 
