@@ -56,7 +56,11 @@ public class Startup {
 
         //Create test category
         Category category = new Category();
-        category.setName("Test category");
+        category.setName("Work");
         categoryService.createCategory(category);
+
+        Category category2 = new Category();
+        category2.setName("Lunch break");
+        categoryService.createCategory(category2);
     }
 }
