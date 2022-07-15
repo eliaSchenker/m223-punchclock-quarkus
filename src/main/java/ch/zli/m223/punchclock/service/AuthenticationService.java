@@ -40,11 +40,11 @@ public class AuthenticationService {
 
 
 
-    public String GenerateValidJwtToken(String username){
+    public String GenerateValidJwtToken(User user){
         String token =
             Jwt.issuer("https://zli.ch/issuer") 
-            .upn(username) 
-            .groups(new HashSet<>(Arrays.asList("User", "Admin"))) 
+            .upn(user.getUsername()) 
+            .groups(new HashSet<>(Arrays.asList(user.getRole()))) 
             .claim(Claims.birthdate.name(), "2001-07-13")
             .expiresIn(Duration.ofHours(1)) 
             .sign();
